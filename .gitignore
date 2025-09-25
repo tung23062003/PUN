@@ -78,11 +78,6 @@ Thumbs.db
 ExportedObj/
 .consulo/
 UserSettings/
-ProjectSettings/
-Assets/ExternalDependencyManager/
-Assets/StreamingAssets/
-Assets/Plugins/
-Assets/Editor Default Resources/
 
 
 *.csproj
