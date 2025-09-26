@@ -19,16 +19,29 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (input != null)
+        if (input != null && photonView.IsMine)
         {
-            if (photonView.IsMine)
-            {
-                Vector3 move = new Vector3(input.MovementInput.x, input.MovementInput.y, 0);
-                transform.Translate(move * moveSpeed * Time.deltaTime, Space.World);
+            Vector2 move = input.MovementInput; // l?y t? input system c?a b?n
+            Vector3 moveVector = new Vector3(move.x, move.y, 0);
 
-                if (move != Vector3.zero)
-                    transform.up = move;
-            }
+            // Di chuy?n
+            transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
+
+            // Animation
+            //if (moveVector == Vector3.zero)
+            //{
+            //    if (_moving)
+            //    {
+            //        Character.AnimationManager.SetState(CharacterState.Idle);
+            //        _moving = false;
+            //    }
+            //}
+            //else
+            //{
+            //    Character.AnimationManager.SetState(CharacterState.Run);
+            //    Character.SetDirection(move.normalized); // ??i h??ng nhìn theo input (trái/ph?i/lên/xu?ng)
+            //    _moving = true;
+            //}
         }
     }
 }
