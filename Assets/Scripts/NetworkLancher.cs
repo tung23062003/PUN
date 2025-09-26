@@ -12,7 +12,7 @@ using ExitGames.Client.Photon;
 /// - Uses MonoBehaviourPunCallbacks to receive Photon callbacks.
 /// - PhotonNetwork.AutomaticallySyncScene can be enabled to let MasterClient change scene for all.
 /// </summary>
-public class Launcher : MonoBehaviourPunCallbacks
+public class NetworkLauncher : MonoBehaviourPunCallbacks
 {
     [Header("Photon Settings")]
     [Tooltip("Game version helps separate players on incompatible builds.")]
@@ -49,7 +49,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     private string matchmakingKey = "mode"; // sample custom room property key
 
     // Singleton convenience
-    public static Launcher Instance { get; private set; }
+    public static NetworkLauncher Instance { get; private set; }
 
     void Awake()
     {
@@ -284,7 +284,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         OnConnectedToPhoton?.Invoke();
 
         // Optionally auto-join lobby
-        // PhotonNetwork.JoinLobby();
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -296,6 +296,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("[Launcher] Joined Lobby.");
+        PhotonNetwork.JoinRandomOrCreateRoom();
         OnJoinedLobbyEvent?.Invoke();
     }
 
@@ -347,6 +348,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         // Optionally cache room custom props or do other initialization
         // Example: spawn player prefab here OR use separate spawner system
+        GameSpawner.Instance.SpawnPlayer();
     }
 
     public override void OnLeftRoom()

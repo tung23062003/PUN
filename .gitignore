@@ -6,6 +6,8 @@ UserSettings/
 UnityGenerated/
 Logs/
 .vs/
+Build
+
 Library*
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
