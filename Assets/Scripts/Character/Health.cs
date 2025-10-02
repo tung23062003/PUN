@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-public class Health : HealthComponent, IPunObservable
+public class Health : HealthComponent //, IPunObservable
 {
     [Tooltip("The max amount of health that can be assigned")]
     [SerializeField]
@@ -72,8 +72,8 @@ public class Health : HealthComponent, IPunObservable
         UpdateHealth(CurrentHealth);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
         //if (stream.IsWriting)
         //{
         //    //if (healthDirty)
@@ -87,5 +87,5 @@ public class Health : HealthComponent, IPunObservable
         //    float newHealth = (float)stream.ReceiveNext();
         //    UpdateHealth(newHealth);
         //}
-    }
+    //}
 }
