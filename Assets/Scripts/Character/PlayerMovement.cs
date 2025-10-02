@@ -1,47 +1,56 @@
+using Assets.HeroEditor4D.Common.Scripts.CharacterScripts;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPunObservable
 {
     [SerializeField] private float moveSpeed = 5f;
 
     private PhotonView photonView;
     private PlayerInput input;
-    public Vector3 CurrentPosition => transform.position;
+    private Vector3 lastPosition;
+    Character4D Character;
+    public bool isMoving;
 
     void Awake()
     {
         input = GetComponent<PlayerInput>();
         photonView = GetComponent<PhotonView>();
+        Character = GetComponent<Character4D>();
+    }
+
+    private void Start()
+    {
+        lastPosition = transform.position;
     }
 
     void Update()
     {
         if (input != null && photonView.IsMine)
         {
-            Vector2 move = input.MovementInput; // l?y t? input system c?a b?n
+            Vector2 move = input.MovementInput;
             Vector3 moveVector = new Vector3(move.x, move.y, 0);
 
-            // Di chuy?n
+            isMoving = moveVector != Vector3.zero;
+
+
             transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
 
-            // Animation
-            //if (moveVector == Vector3.zero)
-            //{
-            //    if (_moving)
-            //    {
-            //        Character.AnimationManager.SetState(CharacterState.Idle);
-            //        _moving = false;
-            //    }
-            //}
-            //else
-            //{
-            //    Character.AnimationManager.SetState(CharacterState.Run);
-            //    Character.SetDirection(move.normalized); // ??i h??ng nhìn theo input (trái/ph?i/lên/xu?ng)
-            //    _moving = true;
-            //}
+            Character.SetDirection(move);
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(isMoving);
+        }
+        else
+        {
+            isMoving = (bool)stream.ReceiveNext();
         }
     }
 }

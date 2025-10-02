@@ -1,3 +1,5 @@
+﻿using Assets.HeroEditor4D.Common.Scripts.CharacterScripts;
+using Assets.HeroEditor4D.Common.Scripts.Enums;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,26 +11,63 @@ public class PlayerAnimation : MonoBehaviour
 
     private PhotonView photonView;
     private PlayerInput input;
+    private Character4D Character;
+    private PlayerMovement playerMovement;
+    private bool hasMove = false;
 
     void Awake()
     {
         photonView = GetComponent<PhotonView>();
         input = GetComponent<PlayerInput>();
+        Character = GetComponent<Character4D>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Update()
     {
         if (photonView.IsMine)
         {
-            float speed = input.MovementInput.magnitude;
-            animator.SetFloat("Speed", speed);
-            photonView.RPC("SyncAnim", RpcTarget.Others, speed);
+            var moveInput = input.MovementInput;
+            if (moveInput == Vector2.zero)
+            {
+                if (hasMove)
+                {
+                    Character.AnimationManager.SetState(CharacterState.Idle);
+                    hasMove = false;
+                }
+            }
+            else
+            {
+                Character.AnimationManager.SetState(CharacterState.Run);
+                hasMove = true;
+            }
+
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                Character.AnimationManager.Slash(twoHanded: false);
+                photonView.RPC(nameof(Attack), RpcTarget.Others);
+            }
+        }
+        else
+        {
+            if (playerMovement.isMoving)
+            {
+                Character.AnimationManager.SetState(CharacterState.Run);
+                //Debug.Log("Run");
+                //playerMovement.isMoving = true;
+            }
+            else
+            {
+                Character.AnimationManager.SetState(CharacterState.Idle);
+                //Debug.Log("Idle");
+                //playerMovement.isMoving = false;
+            }
         }
     }
 
     [PunRPC]
-    void SyncAnim(float speed)
+    private void Attack()
     {
-        animator.SetFloat("Speed", speed);
+        Character.AnimationManager.Slash(twoHanded: false);
     }
 }

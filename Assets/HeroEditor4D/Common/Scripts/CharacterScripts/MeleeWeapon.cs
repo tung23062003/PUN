@@ -30,7 +30,7 @@ namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
             switch (eventName)
             {
                 case "Hit":
-                    // Place hit behaviour here. For example, you could check/raycast collisions here.
+                    Debug.Log("Melee hit");
                     break;
                 default: return;
             }

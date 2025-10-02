@@ -8,6 +8,7 @@ using Assets.HeroEditor4D.Common.Scripts.Enums;
 using Assets.HeroEditor4D.InventorySystem.Scripts;
 using Assets.HeroEditor4D.InventorySystem.Scripts.Data;
 using Assets.HeroEditor4D.InventorySystem.Scripts.Enums;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
@@ -32,7 +33,10 @@ namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
         [Header("Other")]
         public LayerManager LayerManager;
         public Color BodyColor;
-        
+
+        private PhotonView photonView;
+        private int currentIndex = -1;
+
         public SpriteCollection SpriteCollection => Parts[0].SpriteCollection;
         private List<Character> PartsExceptBack => new List<Character> { Front, Left, Right };
 
@@ -60,6 +64,11 @@ namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
             Parts = new List<Character> { Front, Back, Left, Right };
             Parts.ForEach(i => i.BodyRenderers.ForEach(j => j.color = BodyColor));
             Parts.ForEach(i => i.EarsRenderers.ForEach(j => j.color = BodyColor));
+        }
+
+        private void Awake()
+        {
+            photonView = GetComponent<PhotonView>();
         }
 
         public void Start()
@@ -136,57 +145,58 @@ namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
         public Character Active { get; private set; }
 
         public void SetDirection(Vector2 direction)
-		{
+        {
             if (Direction == direction) return;
 
-			Direction = direction;
+            Direction = direction;
 
             if (Direction == Vector2.zero)
             {
-                Parts.ForEach(i => i.SetActive(true));
-                Shadows.ForEach(i => i.SetActive(true));
+                //Parts.ForEach(i => i.SetActive(true));
+                //Shadows.ForEach(i => i.SetActive(true));
 
-                Parts[0].transform.localPosition = Shadows[0].transform.localPosition = new Vector3(0, -1.25f);
-                Parts[1].transform.localPosition = Shadows[1].transform.localPosition = new Vector3(0, 1.25f);
-                Parts[2].transform.localPosition = Shadows[2].transform.localPosition = new Vector3(-1.5f, 0);
-                Parts[3].transform.localPosition = Shadows[3].transform.localPosition = new Vector3(1.5f, 0);
+                //Parts[0].transform.localPosition = Shadows[0].transform.localPosition = new Vector3(0, -1.25f);
+                //Parts[1].transform.localPosition = Shadows[1].transform.localPosition = new Vector3(0, 1.25f);
+                //Parts[2].transform.localPosition = Shadows[2].transform.localPosition = new Vector3(-1.5f, 0);
+                //Parts[3].transform.localPosition = Shadows[3].transform.localPosition = new Vector3(1.5f, 0);
 
                 return;
             }
 
-			Parts.ForEach(i => i.transform.localPosition = Vector3.zero);
-			Shadows.ForEach(i => i.transform.localPosition = Vector3.zero);
+            Parts.ForEach(i => i.transform.localPosition = Vector3.zero);
+            Shadows.ForEach(i => i.transform.localPosition = Vector3.zero);
 
-			int index;
+            if (direction == Vector2.zero) return;
 
-			if (direction == Vector2.left)
-			{
-				index = 2;
-			}
-			else if (direction == Vector2.right)
-			{
-				index = 3;
-			}
-			else if (direction == Vector2.up)
-			{
-				index = 1;
-			}
-			else if (direction == Vector2.down)
-			{
-				index = 0;
-			}
-            else
-			{
-				throw new NotSupportedException();
-			}
+            int index = 0;
+            float ax = Mathf.Abs(direction.x);
+            float ay = Mathf.Abs(direction.y);
 
-			for (var i = 0; i < Parts.Count; i++)
-			{
-                Parts[i].SetActive(i == index);
-				Shadows[i].SetActive(i == index);
-			}
+            if (ax > ay || ax == ay)
+            {
+                index = (direction.x < 0f) ? 2 : 3;
+            }
+            else if (ay > ax)
+            {
+                index = (direction.y > 0f) ? 1 : 0;
+            }
+
+            if (index == currentIndex) return;
+            currentIndex = index;
+            ChangeSprite(index);
+            photonView.RPC(nameof(ChangeSprite), RpcTarget.OthersBuffered, index);
 
             Active = Parts[index];
+        }
+
+        [PunRPC]
+        private void ChangeSprite(int index)
+        {
+            for (var i = 0; i < Parts.Count; i++)
+            {
+                Parts[i].SetActive(i == index);
+                Shadows[i].SetActive(i == index);
+            }
         }
 
         public void CopyFrom(Character4D character)

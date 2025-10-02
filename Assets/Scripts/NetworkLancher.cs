@@ -6,7 +6,7 @@ using Photon.Realtime;
 using ExitGames.Client.Photon;
 
 /// <summary>
-/// A comprehensive Launcher for Photon PUN2 targeted at MMO-like games.
+/// A comprehensive Networking for Photon PUN2 targeted at MMO-like games.
 /// - Attach to a persistent GameObject (DontDestroyOnLoad).
 /// - Expose events for UI and other systems to subscribe.
 /// - Uses MonoBehaviourPunCallbacks to receive Photon callbacks.
@@ -78,7 +78,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
-            Debug.Log("[Launcher] Already connected to Photon.");
+            Debug.Log("[Networking] Already connected to Photon.");
             OnConnectedToPhoton?.Invoke();
             return;
         }
@@ -89,7 +89,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
             PhotonNetwork.AuthValues = new AuthenticationValues(optionalAuthToken);
         }
 
-        Debug.Log("[Launcher] Connecting to Photon...");
+        Debug.Log("[Networking] Connecting to Photon...");
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -222,7 +222,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
 
         isMatchmaking = true;
         Hashtable expected = new Hashtable { { matchmakingKey, mode } };
-        Debug.Log($"[Launcher] StartMatchmaking for mode={mode}");
+        Debug.Log($"[Networking] StartMatchmaking for mode={mode}");
         PhotonNetwork.JoinRandomRoom(expected, maxPlayers);
     }
 
@@ -233,7 +233,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     {
         isMatchmaking = false;
         // nothing special needed; when we get JoinRandomFailed we honor isMatchmaking flag
-        Debug.Log("[Launcher] StopMatchmaking");
+        Debug.Log("[Networking] StopMatchmaking");
     }
 
     /// <summary>
@@ -265,7 +265,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("[Launcher] Already connected; no ReconnectAndRejoin needed.");
+            Debug.Log("[Networking] Already connected; no ReconnectAndRejoin needed.");
         }
     }
 
@@ -275,12 +275,12 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
 
     public override void OnConnected()
     {
-        Debug.Log("[Launcher] OnConnected to Photon low-level.");
+        Debug.Log("[Networking] OnConnected to Photon low-level.");
     }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("[Launcher] OnConnectedToMaster. Can join/create rooms now.");
+        Debug.Log("[Networking] OnConnectedToMaster. Can join/create rooms now.");
         OnConnectedToPhoton?.Invoke();
 
         // Optionally auto-join lobby
@@ -289,27 +289,27 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.LogWarning($"[Launcher] OnDisconnected: {cause}");
+        Debug.LogWarning($"[Networking] OnDisconnected: {cause}");
         OnDisconnectedFromPhoton?.Invoke(cause);
     }
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("[Launcher] Joined Lobby.");
+        Debug.Log("[Networking] Joined Lobby.");
         PhotonNetwork.JoinRandomOrCreateRoom();
         OnJoinedLobbyEvent?.Invoke();
     }
 
     public override void OnLeftLobby()
     {
-        Debug.Log("[Launcher] Left Lobby.");
+        Debug.Log("[Networking] Left Lobby.");
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         // Update cached room list: Photon gives incremental info; rebuild cache
         // We'll clear and add non-removed rooms.
-        Debug.Log($"[Launcher] OnRoomListUpdate: {roomList.Count} entries.");
+        Debug.Log($"[Networking] OnRoomListUpdate: {roomList.Count} entries.");
         // Simple approach: replace cache with visible rooms
         cachedRoomList.Clear();
         foreach (var info in roomList)
@@ -325,25 +325,25 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.Log("[Launcher] Player entered: " + newPlayer.NickName);
+        Debug.Log("[Networking] Player entered: " + newPlayer.NickName);
         OnPlayerEntered?.Invoke(newPlayer);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Debug.Log("[Launcher] Player left: " + otherPlayer.NickName);
+        Debug.Log("[Networking] Player left: " + otherPlayer.NickName);
         OnPlayerLeft?.Invoke(otherPlayer);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        Debug.Log("[Launcher] Master client switched to: " + newMasterClient.NickName);
+        Debug.Log("[Networking] Master client switched to: " + newMasterClient.NickName);
         OnMasterClientSwitchedEvent?.Invoke(newMasterClient);
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("[Launcher] OnJoinedRoom. Room: " + PhotonNetwork.CurrentRoom.Name + " Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        Debug.Log("[Networking] OnJoinedRoom. Room: " + PhotonNetwork.CurrentRoom.Name + " Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
         OnJoinedRoomEvent?.Invoke();
 
         // Optionally cache room custom props or do other initialization
@@ -353,25 +353,25 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Debug.Log("[Launcher] OnLeftRoom");
+        Debug.Log("[Networking] OnLeftRoom");
         OnLeftRoomEvent?.Invoke();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.LogError($"[Launcher] OnCreateRoomFailed: {returnCode} - {message}");
+        Debug.LogError($"[Networking] OnCreateRoomFailed: {returnCode} - {message}");
         OnCreateRoomFailedEvent?.Invoke(message);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        Debug.LogError($"[Launcher] OnJoinRoomFailed: {returnCode} - {message}");
+        Debug.LogError($"[Networking] OnJoinRoomFailed: {returnCode} - {message}");
         OnJoinRoomFailedEvent?.Invoke(message);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.LogWarning($"[Launcher] OnJoinRandomFailed: {returnCode} - {message}");
+        Debug.LogWarning($"[Networking] OnJoinRandomFailed: {returnCode} - {message}");
         // If we were in matchmaking mode, create a new room automatically with that matchmaking prop
         if (isMatchmaking)
         {
@@ -380,7 +380,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
             // We'll create a random name using timestamp
             string roomName = $"Room_{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
             Hashtable props = new Hashtable { { matchmakingKey, "unknown" } }; // you may pass the mode you tried
-            Debug.Log("[Launcher] Creating fallback room: " + roomName);
+            Debug.Log("[Networking] Creating fallback room: " + roomName);
             CreateRoom(roomName, defaultMaxPlayers, defaultIsVisible, defaultIsOpen, props, new string[] { matchmakingKey });
         }
     }
@@ -388,17 +388,17 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         // You can broadcast this event if needed - e.g. update UI
-        Debug.Log($"[Launcher] Player properties updated for {targetPlayer.NickName}");
+        Debug.Log($"[Networking] Player properties updated for {targetPlayer.NickName}");
     }
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        Debug.Log("[Launcher] Room properties updated.");
+        Debug.Log("[Networking] Room properties updated.");
     }
 
     public override void OnFriendListUpdate(List<FriendInfo> friendList)
     {
-        Debug.Log("[Launcher] FriendList updated. Count: " + friendList.Count);
+        Debug.Log("[Networking] FriendList updated. Count: " + friendList.Count);
     }
 
     #endregion
@@ -420,7 +420,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.InRoom)
         {
-            Debug.Log("[Launcher] Not in room.");
+            Debug.Log("[Networking] Not in room.");
             return;
         }
 
