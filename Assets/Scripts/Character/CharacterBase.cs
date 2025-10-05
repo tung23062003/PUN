@@ -1,3 +1,4 @@
+using Assets.HeroEditor4D.Common.Scripts.CharacterScripts;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ public class CharacterBase : MonoBehaviour, ICharacter, IDamageable, IAttackSour
     //public Team Team => team;
     public Health health;
     public GameObject SourceObject => gameObject;
-    public PhotonView photonView;
+    [HideInInspector] public PhotonView photonView;
+    [HideInInspector] public Character4D character;
 
 
     protected virtual void Awake()
@@ -23,6 +25,7 @@ public class CharacterBase : MonoBehaviour, ICharacter, IDamageable, IAttackSour
         // default stats - in real project inject via factory or builder
         //stats = new CharacterStats(1, 100f, 5f, 10f, 0);
         photonView = GetComponent<PhotonView>();
+        character = GetComponent<Character4D>();
     }
 
     protected virtual void Start()

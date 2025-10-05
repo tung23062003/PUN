@@ -10661,6 +10661,7 @@ MonoBehaviour:
     MagicPower: 0
   health: {fileID: 2143506434263308146}
   photonView: {fileID: 0}
+  character: {fileID: 0}
   startingWeapon: {fileID: 11400000, guid: 34393bbcf30eed1428d1e235be405e41, type: 2}
 --- !u!1 &4955409630988451234
 GameObject:

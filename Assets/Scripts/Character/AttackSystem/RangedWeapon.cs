@@ -14,7 +14,7 @@ public class RangedWeapon : MonoBehaviour, IWeapon
         // spawn projectile - in real project use pooling
         var go = new GameObject("Projectile");
         var proj = go.AddComponent<Projectile>();
-        proj.Initialize(user, src, weaponData.damage, weaponData.range, weaponData.damageType);
+        proj.Initialize(user, src, weaponData.damage, weaponData.attackRange, weaponData.damageType);
         go.transform.position = user.Position;
         proj.LaunchTowards(targetPosition);
     }

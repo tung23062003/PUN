@@ -19,10 +19,16 @@ public class MeleeWeapon : MonoBehaviour, IWeapon
 
     public void Attack(CharacterBase user, IAttackSource src, Vector3 targetPosition)
     {
-        DrawDebugCircle(user.Position, data.range, 32, Color.red, 0.5f);
+        //DrawDebugCircle(user.Position, data.attackRange, 32, Color.red, 0.5f);
 
-        // simple hit-scan: find nearest enemy in range
-        Collider2D[] hits = Physics2D.OverlapCircleAll(user.Position, data.range);
+
+        Vector2 direction = user.character.CurrentDirection;
+        Vector2 pos = (Vector2)user.transform.position + direction * data.attackRange;
+
+        DrawDebugBox(pos, data.attackSize, Color.red, 0.5f);
+
+        Collider2D[] hits = Physics2D.OverlapBoxAll(pos, data.attackSize, 0f, LayerMask.NameToLayer("Damageable"));
+
         foreach (var hit in hits)
         {
             var h = hit;
@@ -31,8 +37,7 @@ public class MeleeWeapon : MonoBehaviour, IWeapon
             if (dmgable != null && charSource != null && charSource != user)
             {
                 var dmg = new DamageInfo(data.damage + user.Stats.AttackPower, data.damageType, src);
-                //dmgable.TakeDamage(dmg);
-                //charSource.health.TakeDamage(dmg.Amount);
+
                 if (user.photonView.IsMine)
                 {
                     charSource.health.TakeDamage(dmg.Amount);
@@ -43,6 +48,21 @@ public class MeleeWeapon : MonoBehaviour, IWeapon
                 //break; // one-hit
             }
         }
+    }
+
+    public static void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration = 0.1f)
+    {
+        Vector2 halfSize = size * 0.5f;
+
+        Vector2 topLeft = new Vector2(center.x - halfSize.x, center.y + halfSize.y) + new Vector2(0, halfSize.y);
+        Vector2 topRight = new Vector2(center.x + halfSize.x, center.y + halfSize.y) + new Vector2(0, halfSize.y);
+        Vector2 bottomLeft = new Vector2(center.x - halfSize.x, center.y - halfSize.y) + new Vector2(0, halfSize.y);
+        Vector2 bottomRight = new Vector2(center.x + halfSize.x, center.y - halfSize.y) + new Vector2(0, halfSize.y);
+
+        Debug.DrawLine(topLeft, topRight, color, duration);
+        Debug.DrawLine(topRight, bottomRight, color, duration);
+        Debug.DrawLine(bottomRight, bottomLeft, color, duration);
+        Debug.DrawLine(bottomLeft, topLeft, color, duration);
     }
 
     private void DrawDebugCircle(Vector2 center, float radius, int segments, Color color, float duration = 0.2f)

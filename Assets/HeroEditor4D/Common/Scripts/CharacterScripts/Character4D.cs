@@ -142,6 +142,7 @@ namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
         }
 
         public Vector2 Direction { get; private set; }
+        public Vector2 CurrentDirection { get; private set; }
         public Character Active { get; private set; }
 
         public void SetDirection(Vector2 direction)
@@ -162,6 +163,8 @@ namespace Assets.HeroEditor4D.Common.Scripts.CharacterScripts
 
                 return;
             }
+
+            CurrentDirection = direction;
 
             Parts.ForEach(i => i.transform.localPosition = Vector3.zero);
             Shadows.ForEach(i => i.transform.localPosition = Vector3.zero);

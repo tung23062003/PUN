@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private void Start()
     {
         lastPosition = transform.position;
+
+        Character.SetDirection(Vector2.down);
     }
 
     void Update()

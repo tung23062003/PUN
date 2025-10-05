@@ -17,19 +17,6 @@ MonoBehaviour:
   IconCollections:
   - {fileID: 11400000, guid: 83af5b247e841f5468a89890dddc7d78, type: 2}
   Items:
-  - Id: Gold
-    Level: 0
-    Rarity: 0
-    Type: 1
-    Class: 0
-    Tags: 
-    Properties: []
-    Price: 0
-    Weight: 0
-    Material: 0
-    IconId: Common.Common.Supplies.Coin
-    SpriteId: Common.Common.Supplies.Coin
-    Meta: 
   - Id: WarriorHelmet
     Level: 0
     Rarity: 0
@@ -59,21 +46,6 @@ MonoBehaviour:
     Material: 0
     IconId: FantasyHeroes.Basic.Armor.WarriorArmor
     SpriteId: FantasyHeroes.Basic.Armor.WarriorArmor
-    Meta: 
-  - Id: Sabre
-    Level: 0
-    Rarity: 0
-    Type: 6
-    Class: 2
-    Tags: 
-    Properties:
-    - Id: 13
-      Value: 18-20
-    Price: 20
-    Weight: 50
-    Material: 0
-    IconId: FantasyHeroes.Basic.MeleeWeapon1H.Sabre
-    SpriteId: FantasyHeroes.Basic.MeleeWeapon1H.Sabre
     Meta: 
   - Id: DestroyerGreataxe
     Level: 0
@@ -156,20 +128,20 @@ MonoBehaviour:
     IconId: FantasyHeroes.Basic.Firearm1H.LongBarreledPistol
     SpriteId: FantasyHeroes.Basic.Firearm1H.LongBarreledPistol
     Meta: 
-  - Id: Apple
+  - Id: Sabre
     Level: 0
     Rarity: 0
-    Type: 4
-    Class: 12
+    Type: 6
+    Class: 2
     Tags: 
     Properties:
-    - Id: 20
-      Value: 10
-    Price: 5
-    Weight: 5
+    - Id: 13
+      Value: 18-20
+    Price: 20
+    Weight: 50
     Material: 0
-    IconId: Common.Common.Supplies.RedApple
-    SpriteId: Common.Common.Supplies.RedApple
+    IconId: FantasyHeroes.Basic.MeleeWeapon1H.Sabre
+    SpriteId: FantasyHeroes.Basic.MeleeWeapon1H.Sabre
     Meta: 
   - Id: GoldenRing
     Level: 0
@@ -185,6 +157,34 @@ MonoBehaviour:
     Material: 0
     IconId: FantasyHeroes.Basic.Supplies.GoldenRing
     SpriteId: FantasyHeroes.Basic.Supplies.GoldenRing
+    Meta: 
+  - Id: Apple
+    Level: 0
+    Rarity: 0
+    Type: 4
+    Class: 12
+    Tags: 
+    Properties:
+    - Id: 20
+      Value: 10
+    Price: 5
+    Weight: 5
+    Material: 0
+    IconId: Common.Common.Supplies.RedApple
+    SpriteId: Common.Common.Supplies.RedApple
+    Meta: 
+  - Id: Gold
+    Level: 0
+    Rarity: 0
+    Type: 1
+    Class: 0
+    Tags: 
+    Properties: []
+    Price: 0
+    Weight: 0
+    Material: 0
+    IconId: Common.Common.Supplies.Coin
+    SpriteId: Common.Common.Supplies.Coin
     Meta: 
   BackgroundBlue: {fileID: 21300000, guid: a7a9761b8498fc3469b31675a4250f17, type: 3}
   BackgroundBrown: {fileID: 21300000, guid: 407123b69c6ad85469da2466fe776a87, type: 3}

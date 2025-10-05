@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponId: 1
   damage: 10
-  range: 5
+  attackRange: 2
+  attackSize: {x: 2, y: 2}
   cooldown: 1
   damageType: 0
   weaponType: 0

@@ -7,7 +7,8 @@ public class WeaponDataSO : ScriptableObject
 {
     public string weaponId;
     public float damage;
-    public float range;
+    public float attackRange;
+    public Vector2 attackSize;
     public float cooldown;
     public DamageType damageType;
     public WpnType weaponType;
