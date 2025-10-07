@@ -52,7 +52,7 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Data
 
         [JsonIgnore] public int Hash => $"{Id}.{Modifier?.Id}.{Modifier?.Level}".GetHashCode();
         [JsonIgnore] public bool IsModified => Modifier != null && Modifier.Id != ItemModifier.None;
-        [JsonIgnore] public bool IsEquipment => Params.Type == ItemType.Helmet || Params.Type == ItemType.Armor || Params.Type == ItemType.Vest || Params.Type == ItemType.Bracers || Params.Type == ItemType.Leggings || Params.Type == ItemType.Weapon || Params.Type == ItemType.Shield;
+        [JsonIgnore] public bool IsEquipment => Params.Type == ItemType.Helmet || Params.Type == ItemType.Armor || Params.Type == ItemType.Vest || Params.Type == ItemType.Bracers || Params.Type == ItemType.Leggings || Params.Type == ItemType.Weapon || Params.Type == ItemType.Shield || Params.Type == ItemType.Earrings;
         [JsonIgnore] public bool IsArmor => Params.Type == ItemType.Helmet || Params.Type == ItemType.Armor || Params.Type == ItemType.Vest || Params.Type == ItemType.Bracers || Params.Type == ItemType.Leggings;
         [JsonIgnore] public bool IsWeapon => Params.Type == ItemType.Weapon;
         [JsonIgnore] public bool IsShield => Params.Type == ItemType.Shield;

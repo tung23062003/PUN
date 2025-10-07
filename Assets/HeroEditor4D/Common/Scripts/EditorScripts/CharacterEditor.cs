@@ -388,7 +388,7 @@ namespace Assets.HeroEditor4D.Common.Scripts.EditorScripts
                 }
             }
 
-            InventoryItem.OnLeftClick = item =>
+            InventoryItem.OnLeftClick = (item, rectTransform) =>
             {
                 equipAction?.Invoke(item);
                 EquipCallback?.Invoke(item);

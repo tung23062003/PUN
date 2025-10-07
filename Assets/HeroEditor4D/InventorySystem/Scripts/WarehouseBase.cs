@@ -90,11 +90,11 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
             }
         }
 
-        public void SelectItem(Item item)
+        public void SelectItem(Item item, RectTransform rectTransform = null)
         {
             SelectedItem = item;
             SetAmount(1);
-            ItemInfo.Initialize(SelectedItem, SelectedItem.Params.Price * Amount);
+            ItemInfo.Initialize(SelectedItem, SelectedItem.Params.Price * Amount, rectTransform);
             Refresh();
         }
 

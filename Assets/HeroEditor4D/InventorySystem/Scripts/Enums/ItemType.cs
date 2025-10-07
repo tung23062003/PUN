@@ -6,6 +6,7 @@
 	public enum ItemType
 	{
 		Undefined,
+		All,
 		Currency,
 		Loot,
 		Material,
@@ -25,9 +26,11 @@
 		Jewelry,
         Backpack,
         Container,
-        Booster,
+        Boosts,
         Coupon,
 		Fragment,
+		Earrings,
+		Food,
 		Token
 	}
 }

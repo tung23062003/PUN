@@ -37,7 +37,7 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
         /// <summary>
         /// These actions should be set when inventory UI is opened.
         /// </summary>
-        public static Action<Item> OnLeftClick;
+        public static Action<Item, RectTransform> OnLeftClick;
 		public static Action<Item> OnRightClick;
 	    public static Action<Item> OnDoubleClick;
         public static Action<Item> OnMouseEnter;
@@ -140,7 +140,7 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
         {
             if (button == PointerEventData.InputButton.Left)
             {
-                OnLeftClick?.Invoke(Item);
+                OnLeftClick?.Invoke(Item, GetComponent<RectTransform>());
 
                 var delta = Mathf.Abs(Time.time - _clickTime);
 
@@ -186,7 +186,7 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
 
             if (selected)
             {
-                OnLeftClick?.Invoke(Item);
+                OnLeftClick?.Invoke(Item, GetComponent<RectTransform>());
             }
         }
 

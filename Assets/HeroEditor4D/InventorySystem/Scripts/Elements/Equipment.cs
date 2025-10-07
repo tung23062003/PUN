@@ -70,7 +70,8 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
         {
             if (InventoryItems.Count > 0)
             {
-                InventoryItems[0].Select(true);
+                if(AutoSelect)
+                    InventoryItems[0].Select(true);
 
                 return true;
             }

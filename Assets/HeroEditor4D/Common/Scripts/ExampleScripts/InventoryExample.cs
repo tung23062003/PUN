@@ -24,7 +24,7 @@ namespace Assets.HeroEditor4D.Common.Scripts.ExampleScripts
         {
             var items = ItemCollection.Items.Select(i => new Item(i.Id)).ToList();
 
-            InventoryItem.OnLeftClick = item =>
+            InventoryItem.OnLeftClick = (item, rectTransform) =>
             {
                 Character.Equip(item);
                 AppearanceExample.Refresh();

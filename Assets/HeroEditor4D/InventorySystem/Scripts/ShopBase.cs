@@ -125,11 +125,11 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
             }
         }
 
-	    public void SelectItem(Item item)
+	    public void SelectItem(Item item, RectTransform rectTransform = null)
         {
             SelectedItem = item;
             SetAmount(1);
-            ItemInfo.Initialize(SelectedItem, GetPrice(SelectedItem), TraderInventory.Items.Contains(item));
+            ItemInfo.Initialize(SelectedItem, GetPrice(SelectedItem), rectTransform, TraderInventory.Items.Contains(item));
             Refresh();
         }
 

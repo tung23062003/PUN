@@ -41,7 +41,7 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
             ItemType.Currency,
             ItemType.Token,
             ItemType.Container,
-            ItemType.Booster,
+            ItemType.Boosts,
             ItemType.Supply,
             ItemType.Weapon,
             ItemType.Helmet,
@@ -81,7 +81,8 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
 
             if (any == null) return false;
 
-            any.Select(true);
+            if(AutoSelect)
+                any.Select(true);
 
             return true;
         }
