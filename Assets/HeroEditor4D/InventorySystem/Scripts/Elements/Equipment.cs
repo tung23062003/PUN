@@ -127,20 +127,33 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
 
         private Item FindItem(ItemSlot slot)
         {
-            if (slot.Types.Contains(ItemType.Shield))
-            {
-                var copy = Items.SingleOrDefault(i => i.Params.Type == ItemType.Weapon && (i.IsTwoHanded || i.IsFirearm));
+            //if (slot.Types.Contains(ItemType.Shield))
+            //{
+            //    var copy = Items.SingleOrDefault(i => i.Params.Type == ItemType.Weapon && (i.IsTwoHanded || i.IsFirearm));
 
-                if (copy != null)
-                {
-                    return copy;
-                }
-            }
+            //    if (copy != null)
+            //    {
+            //        return copy;
+            //    }
+            //}
 
             var index = Slots.Where(i => i.Types.SequenceEqual(slot.Types)).ToList().IndexOf(slot);
             var items = Items.Where(slot.Supports).ToList();
 
             return index < items.Count ? items[index] : null;
+        }
+
+        [ContextMenu("SaveEquipment")]
+        public void SaveEquipment()
+        {
+            SaveSystem.Save(Items, "equipped_item");
+        }
+
+        [ContextMenu("LoadEquipment")]
+        public void LoadEquipment()
+        {
+            var equippedItems = SaveSystem.Load<List<Item>>("equipped_item") ?? new List<Item>();
+            Initialize(ref equippedItems);
         }
     }
 }

@@ -64,21 +64,6 @@ MonoBehaviour:
     IconId: FantasyHeroes.Basic.Bow.CurvedShortBow
     SpriteId: FantasyHeroes.Basic.Bow.CurvedShortBow
     Meta: 
-  - Id: PirateHat
-    Level: 0
-    Rarity: 1
-    Type: 10
-    Class: 8
-    Tags: 
-    Properties:
-    - Id: 29
-      Value: 5
-    Price: 15
-    Weight: 20
-    Material: 0
-    IconId: FantasyHeroes.Basic.Helmet.PirateCostume [ShowEars]
-    SpriteId: FantasyHeroes.Basic.Armor.PirateCostume [ShowEars]
-    Meta: 
   - Id: LongBarreledPistol
     Level: 0
     Rarity: 2
@@ -97,6 +82,21 @@ MonoBehaviour:
     Material: 0
     IconId: FantasyHeroes.Basic.Firearm1H.LongBarreledPistol
     SpriteId: FantasyHeroes.Basic.Firearm1H.LongBarreledPistol
+    Meta: 
+  - Id: PirateHat
+    Level: 0
+    Rarity: 1
+    Type: 10
+    Class: 8
+    Tags: 
+    Properties:
+    - Id: 29
+      Value: 5
+    Price: 15
+    Weight: 20
+    Material: 0
+    IconId: FantasyHeroes.Basic.Helmet.PirateCostume [ShowEars]
+    SpriteId: FantasyHeroes.Basic.Armor.PirateCostume [ShowEars]
     Meta: 
   - Id: Sabre
     Level: 0

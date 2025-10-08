@@ -127,13 +127,12 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts.Elements
             Labels.text = string.Join("\n", dict.Keys);
             Values.text = string.Join("\n", dict.Values);
 
-            Panel.SetActive(true);
-
-            // 🔹 Điều chỉnh vị trí Panel nếu có itemRect (nút item được click)
             if (itemRect != null)
             {
                 AdjustPanelPosition(itemRect);
             }
+
+            Panel.SetActive(true);
         }
 
         private void AdjustPanelPosition(RectTransform itemRect)

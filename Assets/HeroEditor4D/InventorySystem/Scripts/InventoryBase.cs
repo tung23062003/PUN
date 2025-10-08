@@ -38,24 +38,26 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
         public Action<Item> OnEquip;
         public Func<Item, bool> CanEquip = i => true;
 
-        public List<ItemType> Tabs = new List<ItemType>()
-        {
-            { ItemType.All},
-            { ItemType.Helmet},
-            { ItemType.Armor},
-            { ItemType.Boosts},
-            { ItemType.Weapon},
-            { ItemType.Gloves},
-            { ItemType.Earrings},
-            { ItemType.Food},
-        };
+        //public List<ItemType> Tabs = new List<ItemType>()
+        //{
+        //    { ItemType.All},
+        //    { ItemType.Helmet},
+        //    { ItemType.Armor},
+        //    { ItemType.Boosts},
+        //    { ItemType.Weapon},
+        //    { ItemType.Gloves},
+        //    { ItemType.Earrings},
+        //    { ItemType.Food},
+        //};
 
-        [HideInInspector] public int CurrentTabIndex;
         [HideInInspector] public ItemType CurrentTab;
 
         public void Awake()
         {
             ItemCollection.Active = ItemCollection;
+            LoadInventory();
+
+            Equipment.LoadEquipment();
         }
 
         public void Start()
@@ -72,16 +74,10 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
         {
             if (!value) return;
 
-            Action<Item> equipAction;
-            int equippedIndex;
             var tab = TabsTrans.GetComponentsInChildren<Toggle>().Single(i => i.isOn);
 
             ItemCollection.Active.Reset();
 
-            //List<ItemSprite> SortByCollection(List<ItemSprite> collection)
-            //{
-            //    return collection.OrderBy(i => CollectionSorting.Contains(i.Collection) ? CollectionSorting.IndexOf(i.Collection) : 999).ThenBy(i => i.Id).ToList();
-            //}
             ItemType itemType = ItemType.All;
             bool isAll = false;
             switch (tab.name)
@@ -139,9 +135,10 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
             else
                 items = ItemCollection.Active.Items.ToList();
 
-            for (var i = 0; i < items.Count; i++)
+            for (int i = items.Count - 1; i >= 0; i--)
             {
-                if (items[i].Id != null && Equipment.Items.Exists(item => item.Id == items[i].Id))
+                var itemIndex = items[i];
+                if (itemIndex.Id != null && Equipment.Items.Exists(item => item.Id == itemIndex.Id))
                 {
                     items.RemoveAt(i);
                 }
@@ -231,6 +228,7 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
             MoveItem(SelectedItem, PlayerInventory, Equipment);
             AudioSource.PlayOneShot(EquipSound, SfxVolume);
             ItemInfo.Reset();
+            Equipment.SaveEquipment();
             OnEquip?.Invoke(SelectedItem);
         }
 
@@ -447,6 +445,18 @@ namespace Assets.HeroEditor4D.InventorySystem.Scripts
             {
                 MoveItemSilent(items.LastOrDefault(i => i.Id != SelectedItem.Id) ?? items.Last(), Equipment, PlayerInventory);
             }
+        }
+
+        [ContextMenu("SaveInventory")]
+        public void SaveInventory()
+        {
+            SaveSystem.Save(ItemCollection.Active.Items, "player_item");
+        }
+
+        [ContextMenu("LoadInventory")]
+        public void LoadInventory()
+        {
+            ItemCollection.Active.Items = SaveSystem.Load<List<ItemParams>>("player_item") ?? new List<ItemParams>();
         }
     }
 }
